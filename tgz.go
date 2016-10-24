@@ -14,7 +14,7 @@ const (
 	tmpPrefix         = "tmp-tgz-"
 )
 
-// Extract decompress a gziped tarball into a new temporal directory
+// Extract decompress a gzipped tarball into a new temporal directory
 // created just for this purpose.
 //
 // On success, the path of the newly created directory and a nil error
@@ -48,11 +48,8 @@ func Extract(tgz string) (d string, err error) {
 		return d, err
 	}
 
-	if err = unTar(tar, d); err != nil {
-		return d, err
-	}
-
-	return d, nil
+	err = unTar(tar, d)
+	return d, err
 }
 
 func zipTarReader(r io.Reader) (*tar.Reader, error) {
@@ -108,14 +105,9 @@ func makeFile(path string, mode os.FileMode, contents io.Reader) (err error) {
 		}
 	}()
 
-	_, err = io.Copy(w, contents)
-	if err != nil {
+	if _, err = io.Copy(w, contents); err != nil {
 		return err
 	}
 
-	if err = os.Chmod(path, mode); err != nil {
-		return err
-	}
-
-	return nil
+	return os.Chmod(path, mode)
 }

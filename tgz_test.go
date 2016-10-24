@@ -84,7 +84,7 @@ func TestExtract(t *testing.T) {
 
 		path, err := Extract(test.tgz)
 		if err != nil {
-			t.Fatalf("%s: unexpected error extracting: %s", err)
+			t.Fatalf("%s: unexpected error extracting: %s", com, err)
 		}
 
 		obt, err := relativeTree(path)
@@ -120,7 +120,7 @@ func relativeTree(dir string) ([]string, error) {
 	return toRelative(absPaths[1:], dir)
 }
 
-// toRelative returns the relative paths (form b) of the list of paths in l.
+// toRelative returns the relative paths (from b) of the list of paths in l.
 func toRelative(l []string, b string) ([]string, error) {
 	r := []string{}
 	for _, p := range l {
